@@ -1,6 +1,7 @@
 package decrypt_config;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
@@ -8,10 +9,10 @@ public class read_header {
 	private byte[] file_byte;
 	private int byte_read;
 	
-	read_header(String filepath) throws IOException {
-		
+	read_header(File config_file_path) throws IOException {
+	
 	int byte_read = 0;
-	FileInputStream file_stream = new FileInputStream(filepath);
+	FileInputStream file_stream = new FileInputStream(config_file_path);
 	StringBuilder tmpstring = new StringBuilder();
 	ByteArrayOutputStream file_byte = new ByteArrayOutputStream(); 
 	while(file_stream.available() > 0) { //remove header, create a function to read this?

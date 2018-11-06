@@ -2,6 +2,7 @@ package decrypt_config;
 
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
@@ -34,11 +35,11 @@ public class file_util {
 			
 		}
 		
-		public static byte[] read_enc_iv(String filepath) throws IOException {
-			FileInputStream file_stream = new FileInputStream(filepath);
+		public static byte[] read_enc_iv(File config_file_path) throws IOException {
+			FileInputStream file_stream = new FileInputStream(config_file_path);
 			ByteArrayOutputStream file_byte = new ByteArrayOutputStream();
 			int n = 0;
-			read_header header = new read_header(filepath);
+			read_header header = new read_header(config_file_path);
 			
 			file_stream.skip(header.getByte_read());
 			while ( n < 16 ) {
@@ -58,7 +59,7 @@ public class file_util {
 			
 		}
 		
-		public static void write_file_raw(String dest_file, byte[] content,byte[] sign_key) throws IOException, InvalidKeyException, SignatureException, NoSuchAlgorithmException {
+		public static void write_file_raw_signed(String dest_file, byte[] content,byte[] sign_key) throws IOException, InvalidKeyException, SignatureException, NoSuchAlgorithmException {
 			FileOutputStream writer = new FileOutputStream(dest_file);
 			
 			writer.write(content);

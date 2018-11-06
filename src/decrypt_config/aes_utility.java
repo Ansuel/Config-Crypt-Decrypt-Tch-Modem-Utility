@@ -2,6 +2,7 @@ package decrypt_config;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.security.InvalidKeyException;
@@ -14,14 +15,13 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class aes_utility {
     
-	public static StringBuilder decrypt(String config_file_path,byte[] aes_key) throws Exception {
+	public static StringBuilder decrypt(File config_file_path,byte[] aes_key) throws Exception {
 
             final StringBuilder output = new StringBuilder();
             byte[] iv = file_util.read_enc_iv(config_file_path);
             final Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             IvParameterSpec ivParameterSpec = new IvParameterSpec(iv, 0, cipher.getBlockSize());
             SecretKeySpec secretSpec = new SecretKeySpec(aes_key, "AES");
-            
             FileInputStream file_stream = new FileInputStream(config_file_path);
             read_header header = new read_header(config_file_path);
             output.append(new String(header.getFile_byte()));
@@ -45,8 +45,13 @@ public class aes_utility {
 
             final byte[] buffer = new byte[1024];
             int read = cipherInputStream.read(buffer);
-
+            
+            //int remaining_bit = enc_stream.available();
+            
             while (read > -1) {
+            	//int progressValue = (int) (((double) (remaining_bit-enc_stream.available())/remaining_bit)*100);
+            	//System.out.println(progressValue);
+            	//frame.progressbar.setValue(progressValue);
                 output.append(new String(buffer, 0, read, charsetName));
                 read = cipherInputStream.read(buffer);
             }
@@ -58,7 +63,7 @@ public class aes_utility {
 
     }
 	
-	public static byte[] encrypt(String config_file_path,byte[] aes_key) throws Exception {
+	public static byte[] encrypt(File config_file_path,byte[] aes_key) throws Exception {
 
 			ByteArrayOutputStream output = new ByteArrayOutputStream();
             final Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
