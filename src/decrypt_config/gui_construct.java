@@ -1,7 +1,6 @@
 package decrypt_config;
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.io.File;
 import javax.swing.*;
@@ -10,7 +9,8 @@ import javax.swing.border.TitledBorder;
 public class gui_construct extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private static final String titolo = "Crypt / Decrypt config utiliy";
+	private static final String titolo = "Technicolor modem Crypt / Decrypt config utiliy";
+	private static final Exception Exception = null;
 	private File filename;
 	private key_pair key;
 	
@@ -36,7 +36,7 @@ public class gui_construct extends JFrame {
 
     JFileChooser file_choser = new JFileChooser();
 	
-	public gui_construct() {
+	public gui_construct() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
 		super(titolo);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -126,7 +126,7 @@ public class gui_construct extends JFrame {
 	}
 	
 	private JPanel InfoLogPanel() {
-		JPanel infoPanelP = new JPanel(new FlowLayout());
+		JPanel infoPanelP = new JPanel(new BorderLayout());
 		infoPanelP.setBorder(new TitledBorder("Log Info"));
 		JPanel infoPanel = new JPanel(new GridLayout(1, 2));
 		JPanel headerPanel = new JPanel(new GridLayout(1, 2));
@@ -139,8 +139,8 @@ public class gui_construct extends JFrame {
 		JLabel MAC = new JLabel("MAC: ");
 		JLabel SerialNumber = new JLabel("SerialNumber: ");
 		JLabel BuildVersion = new JLabel("BuildVersion: ");
-		JLabel Signed = new JLabel("Signed: ");
-		JLabel Crypted = new JLabel("Crypted: ");
+		JLabel Signed = new JLabel("Must be signed: ");
+		JLabel Crypted = new JLabel("Must be crypted: ");
 		JLabel IV = new JLabel("IV: ");
 		
 		headerLegend.add(BoardType);
@@ -158,7 +158,6 @@ public class gui_construct extends JFrame {
 		log = new JTextArea(5,25);
 		headerFile = new JTextArea(20,40);
 		JScrollPane logPanel = new JScrollPane(log);
-		//JScrollPane headerFilePanel = new JScrollPane(headerFile);
 		
 		log.setEditable(false);
 		headerFile.setEditable(false);
@@ -166,7 +165,7 @@ public class gui_construct extends JFrame {
 		infoPanel.add(logPanel);
 		infoPanel.add(headerPanel);
 		
-		infoPanelP.add(infoPanel);
+		infoPanelP.add(infoPanel,BorderLayout.CENTER);
 		
 		return infoPanelP;
 	}
@@ -191,7 +190,10 @@ public class gui_construct extends JFrame {
 		this.filename = filename;
 	}
 	
-	public void setKeyPair(String key) {
+	public void setKeyPair(String key) throws Exception {
+		if ( key.length() != 128 ) {
+			throw Exception;
+		}
 		key_pair inizialized_key = new key_pair(key);
 		this.key = inizialized_key;
 	}

@@ -27,10 +27,8 @@ public class file_analyze {
 		file_stream.close();
 		
 		if ( tmpstring.toString().equals("[*]") ) {
-			System.out.println(tmpstring.toString());
 			this.file_type = "decrypted";
 		} else {
-			System.out.println(tmpstring.toString());
 			this.iv = new String(file_util.read_enc_iv(config_file_path));
 			this.file_type = "encrypted";
 		}
