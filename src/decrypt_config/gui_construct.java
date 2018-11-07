@@ -1,74 +1,190 @@
 package decrypt_config;
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.io.File;
-
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 
 public class gui_construct extends JFrame {
 
+	private static final long serialVersionUID = 1L;
 	private static final String titolo = "Crypt / Decrypt config utiliy";
 	private File filename;
 	private key_pair key;
 	
-	private static final JLabel head = new JLabel("Utility to decrypt and encrypt config file from modem");
-	private static final JPanel headPanel = new JPanel();
+	JPanel buttonPanel;
+	JButton decryptFile;
+	JButton encryptFile;
+	JButton analyzeFile;
 	
-	button_listners listner = new button_listners(this);
+	JButton input;
+	JTextField inputtextField;
+	JTextField inputkeyField;
+	JTextArea log;
+	JTextArea headerFile;
 	
-	JPanel inputPanel = new JPanel(new GridLayout(3, 1));
-	JPanel fileSubPanel = new JPanel(); 
-	JPanel keyInputPanel = new JPanel(new GridLayout(2, 1));
-	//JPanel progressbarPanel = new JPanel();
-	JPanel buttonPanel = new JPanel();
-	JLabel keyinfotext = new JLabel("Insert the 128bit hex key extracted from the modem");
-	JTextField inputkeyField = new JTextField(64);
-	JTextField inputtextField = new JTextField(50);
-	//JProgressBar progressbar = new JProgressBar();
-	JButton analyze = new JButton("Analyze");
-	JButton decryptFile = new JButton("Decrypt");
-	JButton encryptFile = new JButton("Encrypt");
-
-    JButton input = new JButton("Select File");
+	JLabel BoardType;
+	JLabel ProductName;
+	JLabel MAC;
+	JLabel SerialNumber;
+	JLabel BuildVersion;
+	JLabel Signed;
+	JLabel Crypted;
+	JLabel IV;
 
     JFileChooser file_choser = new JFileChooser();
 	
 	public gui_construct() {
 		super(titolo);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		Container frmContentPane = getContentPane();
+		frmContentPane.add(Header(), BorderLayout.NORTH);
+		frmContentPane.add(ContentPanel(), BorderLayout.CENTER);
+		frmContentPane.add(ButtonPanel(), BorderLayout.SOUTH);
 		
+		pack();
+		setLocationRelativeTo(null);
+		
+		setVisible(true);
+	}
+	
+	private JPanel Header() {
+		
+		final JPanel headPanel = new JPanel();
+		
+		final JLabel head = new JLabel("Utility to decrypt and encrypt config file from modem");
 		headPanel.add(head);
 		
+		return headPanel;
+	}
+	
+	private JPanel ContentPanel() {
+		JPanel contentPanel = new JPanel(new BorderLayout());
+		
+	    contentPanel.add(InputFilePanel(), BorderLayout.NORTH);
+	    contentPanel.add(InputKeyPairPanel(), BorderLayout.CENTER);
+		contentPanel.add(InfoLogPanel(), BorderLayout.PAGE_END);
+		contentPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		
+		return contentPanel;
+	}
+	
+	private JPanel InputFilePanel() {
+		
+		JPanel fileSubPanel = new JPanel(); 
+		fileSubPanel.setBorder(new TitledBorder("Config File"));
+		inputtextField = new JTextField(50);
 		inputtextField.setEditable(false);
+		input = new JButton("Select File");
+		
 		fileSubPanel.add(inputtextField);
 		fileSubPanel.add(input);
-		keyInputPanel.add(keyinfotext);
-		keyInputPanel.add(inputkeyField);
-		
-		//progressbarPanel.add(progressbar);
-		inputPanel.add(fileSubPanel);
-		inputPanel.add(keyInputPanel);
-		//inputPanel.add(progressbarPanel);
-		buttonPanel.add(analyze);
 		
 		input.addActionListener(new button_listners(this));
-		analyze.addActionListener(new button_listners(this));
+		
+		return fileSubPanel;
+	}
+	
+	private JPanel InputKeyPairPanel() {
+		
+		JPanel keyInputPanel = new JPanel(new BorderLayout());
+		keyInputPanel.setBorder(new TitledBorder("Key Settings"));
+		JLabel keyinfotext = new JLabel("Insert the 128bit hex key extracted from the modem");
+		inputkeyField = new JTextField(64);
+		
+		keyInputPanel.add(keyinfotext,BorderLayout.NORTH);
+		keyInputPanel.add(inputkeyField,BorderLayout.SOUTH);
+		
+		return keyInputPanel;
+	}
+	
+	private JPanel PopulateHeaderValue(){
+		JPanel headerValuePanel = new JPanel(new GridLayout(8, 1));
+		
+		BoardType = new JLabel();
+		ProductName = new JLabel();
+		MAC = new JLabel();
+		SerialNumber = new JLabel();
+		BuildVersion = new JLabel();
+		Signed = new JLabel();
+		Crypted = new JLabel();
+		IV = new JLabel();
+		
+		headerValuePanel.add(BoardType);
+		headerValuePanel.add(ProductName);
+		headerValuePanel.add(MAC);
+		headerValuePanel.add(SerialNumber);
+		headerValuePanel.add(BuildVersion);
+		headerValuePanel.add(Signed);
+		headerValuePanel.add(Crypted);
+		headerValuePanel.add(IV);
+		
+		return headerValuePanel;
+	}
+	
+	private JPanel InfoLogPanel() {
+		JPanel infoPanelP = new JPanel(new FlowLayout());
+		infoPanelP.setBorder(new TitledBorder("Log Info"));
+		JPanel infoPanel = new JPanel(new GridLayout(1, 2));
+		JPanel headerPanel = new JPanel(new GridLayout(1, 2));
+		JPanel headerLegend = new JPanel(new GridLayout(8, 1));
+		
+		headerPanel.setBorder(new TitledBorder("Config Info"));
+
+		JLabel BoardType = new JLabel("BoardType: ");
+		JLabel ProductName = new JLabel("ProductName: ");
+		JLabel MAC = new JLabel("MAC: ");
+		JLabel SerialNumber = new JLabel("SerialNumber: ");
+		JLabel BuildVersion = new JLabel("BuildVersion: ");
+		JLabel Signed = new JLabel("Signed: ");
+		JLabel Crypted = new JLabel("Crypted: ");
+		JLabel IV = new JLabel("IV: ");
+		
+		headerLegend.add(BoardType);
+		headerLegend.add(ProductName);
+		headerLegend.add(MAC);
+		headerLegend.add(SerialNumber);
+		headerLegend.add(BuildVersion);
+		headerLegend.add(Signed);
+		headerLegend.add(Crypted);
+		headerLegend.add(IV);
+		
+		headerPanel.add(headerLegend);
+		headerPanel.add(PopulateHeaderValue());
+		
+		log = new JTextArea(5,25);
+		headerFile = new JTextArea(20,40);
+		JScrollPane logPanel = new JScrollPane(log);
+		//JScrollPane headerFilePanel = new JScrollPane(headerFile);
+		
+		log.setEditable(false);
+		headerFile.setEditable(false);
+		
+		infoPanel.add(logPanel);
+		infoPanel.add(headerPanel);
+		
+		infoPanelP.add(infoPanel);
+		
+		return infoPanelP;
+	}
+	
+	private JPanel ButtonPanel() {
+		buttonPanel = new JPanel();
+		
+		analyzeFile = new JButton("Analyze");
+		decryptFile = new JButton("Decrypt");
+		encryptFile = new JButton("Encrypt");
+		
+		analyzeFile.addActionListener(new button_listners(this));
 		decryptFile.addActionListener(new button_listners(this));
 		encryptFile.addActionListener(new button_listners(this));
 		
-		inputPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		buttonPanel.add(analyzeFile);
 		
-		Container frmContentPane = this.getContentPane();
-		frmContentPane.add(headPanel, BorderLayout.NORTH);
-		frmContentPane.add(inputPanel, BorderLayout.CENTER);
-		frmContentPane.add(buttonPanel, BorderLayout.SOUTH);
-		
-		this.pack();
-		this.setLocationRelativeTo(null);
-		this.setVisible(true);
+		return buttonPanel;
 	}
 	
 	public void setFilename(File filename) {
