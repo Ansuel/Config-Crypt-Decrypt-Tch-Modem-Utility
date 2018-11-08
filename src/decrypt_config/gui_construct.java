@@ -2,6 +2,7 @@ package decrypt_config;
 import java.io.File;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -10,6 +11,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
+import javafx.scene.control.Separator;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
@@ -55,6 +57,7 @@ public class gui_construct {
         root.getChildren().add(InputFilePanel());
         root.getChildren().add(InputKeyPairPanel());
         root.getChildren().add(InfoLogPanel());
+        root.getChildren().add(Separator());
         root.getChildren().add(ButtonPanel());
 	}
     
@@ -166,11 +169,12 @@ public class gui_construct {
 		
 		TitledPane logPanel = new TitledPane("Log", new ScrollPane(log)); 
 		logPanel.setCollapsible(false);
-		logPanel.setPadding(new Insets(0,10,10,10));
+		logPanel.setPadding(new Insets(0,5,0,0));
 		
 		TitledPane HeaderPanel = new TitledPane("Config Info", HeaderSubPanel); 
 		HeaderPanel.setCollapsible(false);
-		HeaderPanel.setPadding(new Insets(0,10,10,10));
+		HeaderPanel.setPadding(new Insets(0,0,0,5));
+		HeaderSubPanel.setPrefWidth(300);
 		
 		HBox infoPanel = new HBox();
 		
@@ -180,6 +184,15 @@ public class gui_construct {
 		
 		return infoPanel;
 	}
+    
+    private Node Separator() {
+    	
+    	final Separator separator = new Separator();
+    	separator.setOrientation(Orientation.HORIZONTAL);
+    	separator.setPadding(new Insets(20, 0, 10, 0));
+    	
+    	return separator;
+    }
     
     private Node ButtonPanel() {
 		buttonPanel = new StackPane();
