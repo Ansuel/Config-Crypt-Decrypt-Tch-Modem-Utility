@@ -12,10 +12,12 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.Separator;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
@@ -48,20 +50,29 @@ public class gui_construct {
 
 	 
 	public gui_construct() {
-		VBox root = new VBox();
+		BorderPane root = new BorderPane();
 		root.setPadding(new Insets(20, 10, 10, 10));
 		
         this.scene = new Scene(root);
         
-        root.getChildren().add(Header());
-        root.getChildren().add(InputFilePanel());
-        root.getChildren().add(InputKeyPairPanel());
-        root.getChildren().add(InfoLogPanel());
-        root.getChildren().add(Separator());
-        root.getChildren().add(ButtonPanel());
+        scene.getStylesheets().add(Main.class.getResource("/modena_dark.css").toExternalForm());
+        
+        root.setTop(Header());
+        root.setCenter(Content());
+        root.setBottom(Footer());
 	}
     
 	button_listners Listners = new button_listners(this);
+	
+	private Node Content() {
+		VBox content = new VBox();
+		
+		content.getChildren().add(InputFilePanel());
+		content.getChildren().add(InputKeyPairPanel());
+		content.getChildren().add(InfoLogPanel());
+		
+		return content;
+	}
     
     private Node Header() {
 		
@@ -74,6 +85,15 @@ public class gui_construct {
 		
 		return headPanel;
 	}
+    
+    private Node Footer() {
+    	VBox footer = new VBox();
+    	
+    	footer.getChildren().add(Separator());
+    	footer.getChildren().add(ButtonPanel());
+    	
+    	return footer;
+    }
     
     private Node InputFilePanel() {
 		
@@ -187,11 +207,21 @@ public class gui_construct {
     
     private Node Separator() {
     	
-    	final Separator separator = new Separator();
-    	separator.setOrientation(Orientation.HORIZONTAL);
-    	separator.setPadding(new Insets(20, 0, 10, 0));
+    	final HBox SeparatorPanel = new HBox();
+    	SeparatorPanel.setPadding(new Insets(20, 0, 10, 0));
     	
-    	return separator;
+    	final Separator LineSeparator = new Separator();
+    	LineSeparator.setOrientation(Orientation.HORIZONTAL);
+    	final Label Version = new Label("Version "+Main.Version);
+    	Version.setPadding(new Insets(-10, 0, 0, 0));
+    	Version.setTextFill(Color.GRAY);
+    	
+    	SeparatorPanel.getChildren().add(LineSeparator);
+    	SeparatorPanel.getChildren().add(Version);
+    	
+    	HBox.setHgrow(LineSeparator, Priority.ALWAYS);
+    	
+    	return SeparatorPanel;
     }
     
     private Node ButtonPanel() {
