@@ -45,9 +45,13 @@ public class button_listners {
 				byte[] chiper = Scene.getKeyPair().getChiper();
 				try {
 					StringBuilder content = aes_utility.decrypt(file, chiper);
-					file_util.write_file(file.toString()+".dec", content);
+					
 					Scene.log.appendText("Decryption done.\n");
-					Scene.log.appendText("You can find the decrypted file here: "+file.toString()+".dec\n");
+					
+					File outputfile = OutputFileDialog();
+					file_util.write_file(outputfile.toString(), content);
+					
+					Scene.log.appendText("You can find the decrypted file here: "+outputfile.toString()+"\n");
 				} catch (Exception e1) {
 					Scene.log.appendText("Decryption error.Wrong key provided?\n");
 					e1.printStackTrace();
@@ -71,9 +75,12 @@ public class button_listners {
 				byte[] signature = Scene.getKeyPair().getSignature();
 				try {
 					byte[] content = aes_utility.encrypt(file, chiper);
-					file_util.write_file_raw_signed(file.toString()+".enc", content,signature);
 					Scene.log.appendText("Encryption done.\n");
-					Scene.log.appendText("You can find the ecrypted file here: "+file.toString()+".enc\n");
+					
+					File outputfile = OutputFileDialog();
+					file_util.write_file_raw_signed(outputfile.toString(), content,signature);
+					
+					Scene.log.appendText("You can find the ecrypted file here: "+outputfile.toString()+"\n");
 				} catch (Exception e1) {
 					Scene.log.appendText("Encryption error.Wrong key provided?\n");
 					e1.printStackTrace();
@@ -172,6 +179,13 @@ public class button_listners {
 				alert.showAndWait();
 			}
 		}
+	}
+	
+	private File OutputFileDialog() {
+		FileChooser File_Choser = new FileChooser();
+		File file = File_Choser.showSaveDialog(gui_inizializer.stage);
+		
+		return file;
 	}
 
 	
