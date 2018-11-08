@@ -28,6 +28,7 @@ public class gui_construct {
 	private key_pair key;
 	
 	TextField FileInputText;
+	TextField KeyInputField;
 	/*
 	JPanel buttonPanel;
 	JButton decryptFile;
@@ -59,6 +60,7 @@ public class gui_construct {
         
         root.getChildren().add(Header());
         root.getChildren().add(InputFilePanel());
+        root.getChildren().add(InputKeyPairPanel());
 	}
     
 	button_listners Listners = new button_listners(this);
@@ -77,24 +79,42 @@ public class gui_construct {
     
     private Node InputFilePanel() {
 		
-		final HBox filePanel = new HBox();
+		final HBox fileSubPanel = new HBox();
 		
 		FileInputText = new TextField();
 		FileInputText.setEditable(false);
 		Button input = new Button("Select File");
 		input.setOnAction(Listners.getInputFileEventHandler());
 
-		filePanel.getChildren().add(FileInputText);
-		filePanel.getChildren().add(input);
+		fileSubPanel.getChildren().add(FileInputText);
+		fileSubPanel.getChildren().add(input);
 		
 		HBox.setHgrow(FileInputText, Priority.ALWAYS);
 		
-		TitledPane fileSubPanel = new TitledPane("Config File", filePanel); 
-		fileSubPanel.setCollapsible(false);
+		TitledPane filePanel = new TitledPane("Config File", fileSubPanel); 
+		filePanel.setCollapsible(false);
+		filePanel.setPadding(new Insets(0,0,10,0));
 		
-		return fileSubPanel;
+		return filePanel;
 	}
     
+    
+    private Node InputKeyPairPanel() {
+		
+		VBox keyInputSubPanel = new VBox();
+		
+		Label keyinfotext = new Label("Insert the 128bit hex key extracted from the modem");
+		KeyInputField = new TextField();
+		
+		keyInputSubPanel.getChildren().add(keyinfotext);
+		keyInputSubPanel.getChildren().add(KeyInputField);
+		
+		TitledPane keyInputPanel = new TitledPane("Key Settings", keyInputSubPanel); 
+		keyInputPanel.setCollapsible(false);
+		keyInputPanel.setPadding(new Insets(0,0,10,0));
+		
+		return keyInputPanel;
+	}
     /*
 	Container frmContentPane = getContentPane();
 		frmContentPane.add(Header(), BorderLayout.NORTH);
