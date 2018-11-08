@@ -5,11 +5,11 @@ import javafx.stage.Stage;
 
 public class gui_inizializer extends Application {
 
-	private static Stage stage;
+	static Stage stage;
 	
     @Override
     public void start(Stage stage) {
-    	this.stage = stage;
+    	gui_inizializer.stage = stage;
     	initUI(stage);
     }
     
@@ -21,8 +21,5 @@ public class gui_inizializer extends Application {
         stage.setScene(new gui_construct().getScene());
         stage.show();
     }
-    
-    public static Stage getStage() {
-    	return stage;
-    }
+
 }

@@ -1,12 +1,13 @@
 package decrypt_config;
 import java.io.File;
 
-import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.HBox;
@@ -15,8 +16,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
 public class gui_construct {
 
@@ -29,28 +28,22 @@ public class gui_construct {
 	
 	TextField FileInputText;
 	TextField KeyInputField;
-	/*
-	JPanel buttonPanel;
-	JButton decryptFile;
-	JButton encryptFile;
-	JButton analyzeFile;
-	
-	JButton input;
-	JTextField inputtextField;
-	JTextField inputkeyField;
-	JTextArea log;
-	JTextArea headerFile;
-	
-	JLabel BoardType;
-	JLabel ProductName;
-	JLabel MAC;
-	JLabel SerialNumber;
-	JLabel BuildVersion;
-	JLabel Signed;
-	JLabel Crypted;
-	JLabel IV;
+	TextArea log;
 
-    JFileChooser file_choser = new JFileChooser();*/
+	StackPane buttonPanel;
+	Button decryptFile;
+	Button encryptFile;
+	Button analyzeFile;
+
+	Label BoardType;
+	Label ProductName;
+	Label MAC;
+	Label SerialNumber;
+	Label BuildVersion;
+	Label Signed;
+	Label Crypted;
+	Label IV;
+
 	 
 	public gui_construct() {
 		VBox root = new VBox();
@@ -61,6 +54,8 @@ public class gui_construct {
         root.getChildren().add(Header());
         root.getChildren().add(InputFilePanel());
         root.getChildren().add(InputKeyPairPanel());
+        root.getChildren().add(InfoLogPanel());
+        root.getChildren().add(ButtonPanel());
 	}
     
 	button_listners Listners = new button_listners(this);
@@ -115,120 +110,93 @@ public class gui_construct {
 		
 		return keyInputPanel;
 	}
-    /*
-	Container frmContentPane = getContentPane();
-		frmContentPane.add(Header(), BorderLayout.NORTH);
-		frmContentPane.add(ContentPanel(), BorderLayout.CENTER);
-		frmContentPane.add(ButtonPanel(), BorderLayout.SOUTH);
-	private JPanel ContentPanel() {
-		JPanel contentPanel = new JPanel(new BorderLayout());
+    
+    private VBox PopulateHeaderValue(){
+		VBox headerValuePanel = new VBox();
 		
-	    contentPanel.add(InputFilePanel(), BorderLayout.NORTH);
-	    contentPanel.add(InputKeyPairPanel(), BorderLayout.CENTER);
-		contentPanel.add(InfoLogPanel(), BorderLayout.PAGE_END);
-		contentPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		BoardType = new Label();
+		ProductName = new Label();
+		MAC = new Label();
+		SerialNumber = new Label();
+		BuildVersion = new Label();
+		Signed = new Label();
+		Crypted = new Label();
+		IV = new Label();
 		
-		return contentPanel;
-	}
-	
-	private JPanel InputKeyPairPanel() {
-		
-		JPanel keyInputPanel = new JPanel(new BorderLayout());
-		keyInputPanel.setBorder(new TitledBorder("Key Settings"));
-		JLabel keyinfotext = new JLabel("Insert the 128bit hex key extracted from the modem");
-		inputkeyField = new JTextField(64);
-		
-		keyInputPanel.add(keyinfotext,BorderLayout.NORTH);
-		keyInputPanel.add(inputkeyField,BorderLayout.SOUTH);
-		
-		return keyInputPanel;
-	}
-	
-	private JPanel PopulateHeaderValue(){
-		JPanel headerValuePanel = new JPanel(new GridLayout(8, 1));
-		
-		BoardType = new JLabel();
-		ProductName = new JLabel();
-		MAC = new JLabel();
-		SerialNumber = new JLabel();
-		BuildVersion = new JLabel();
-		Signed = new JLabel();
-		Crypted = new JLabel();
-		IV = new JLabel();
-		
-		headerValuePanel.add(BoardType);
-		headerValuePanel.add(ProductName);
-		headerValuePanel.add(MAC);
-		headerValuePanel.add(SerialNumber);
-		headerValuePanel.add(BuildVersion);
-		headerValuePanel.add(Signed);
-		headerValuePanel.add(Crypted);
-		headerValuePanel.add(IV);
+		headerValuePanel.getChildren().add(BoardType);
+		headerValuePanel.getChildren().add(ProductName);
+		headerValuePanel.getChildren().add(MAC);
+		headerValuePanel.getChildren().add(SerialNumber);
+		headerValuePanel.getChildren().add(BuildVersion);
+		headerValuePanel.getChildren().add(Signed);
+		headerValuePanel.getChildren().add(Crypted);
+		headerValuePanel.getChildren().add(IV);
 		
 		return headerValuePanel;
 	}
-	
-	private JPanel InfoLogPanel() {
-		JPanel infoPanelP = new JPanel(new BorderLayout());
-		infoPanelP.setBorder(new TitledBorder("Log Info"));
-		JPanel infoPanel = new JPanel(new GridLayout(1, 2));
-		JPanel headerPanel = new JPanel(new GridLayout(1, 2));
-		JPanel headerLegend = new JPanel(new GridLayout(8, 1));
+    
+    private Node InfoLogPanel() {
+		//HBox headerPanel = new HBox();
+    	VBox headerLegend = new VBox();
 		
-		headerPanel.setBorder(new TitledBorder("Config Info"));
-
-		JLabel BoardType = new JLabel("BoardType: ");
-		JLabel ProductName = new JLabel("ProductName: ");
-		JLabel MAC = new JLabel("MAC: ");
-		JLabel SerialNumber = new JLabel("SerialNumber: ");
-		JLabel BuildVersion = new JLabel("BuildVersion: ");
-		JLabel Signed = new JLabel("Must be signed: ");
-		JLabel Crypted = new JLabel("Must be crypted: ");
-		JLabel IV = new JLabel("IV: ");
+		Label BoardType = new Label("BoardType: ");
+		Label ProductName = new Label("ProductName: ");
+		Label MAC = new Label("MAC: ");
+		Label SerialNumber = new Label("SerialNumber: ");
+		Label BuildVersion = new Label("BuildVersion: ");
+		Label Signed = new Label("Must be signed: ");
+		Label Crypted = new Label("Must be crypted: ");
+		Label IV = new Label("IV: ");
 		
-		headerLegend.add(BoardType);
-		headerLegend.add(ProductName);
-		headerLegend.add(MAC);
-		headerLegend.add(SerialNumber);
-		headerLegend.add(BuildVersion);
-		headerLegend.add(Signed);
-		headerLegend.add(Crypted);
-		headerLegend.add(IV);
+		headerLegend.getChildren().add(BoardType);
+		headerLegend.getChildren().add(ProductName);
+		headerLegend.getChildren().add(MAC);
+		headerLegend.getChildren().add(SerialNumber);
+		headerLegend.getChildren().add(BuildVersion);
+		headerLegend.getChildren().add(Signed);
+		headerLegend.getChildren().add(Crypted);
+		headerLegend.getChildren().add(IV);
 		
-		headerPanel.add(headerLegend);
-		headerPanel.add(PopulateHeaderValue());
+		HBox HeaderSubPanel = new HBox();
+		HeaderSubPanel.getChildren().add(headerLegend);
+		HeaderSubPanel.getChildren().add(PopulateHeaderValue());
 		
-		log = new JTextArea(5,25);
-		headerFile = new JTextArea(20,40);
-		JScrollPane logPanel = new JScrollPane(log);
-		
+		log = new TextArea();
 		log.setEditable(false);
-		headerFile.setEditable(false);
 		
-		infoPanel.add(logPanel);
-		infoPanel.add(headerPanel);
+		TitledPane logPanel = new TitledPane("Log", new ScrollPane(log)); 
+		logPanel.setCollapsible(false);
+		logPanel.setPadding(new Insets(0,10,10,10));
 		
-		infoPanelP.add(infoPanel,BorderLayout.CENTER);
+		TitledPane HeaderPanel = new TitledPane("Config Info", HeaderSubPanel); 
+		HeaderPanel.setCollapsible(false);
+		HeaderPanel.setPadding(new Insets(0,10,10,10));
 		
-		return infoPanelP;
+		HBox infoPanel = new HBox();
+		
+		infoPanel.getChildren().add(logPanel);
+		infoPanel.getChildren().add(HeaderPanel);
+		
+		
+		return infoPanel;
 	}
-	
-	private JPanel ButtonPanel() {
-		buttonPanel = new JPanel();
+    
+    private Node ButtonPanel() {
+		buttonPanel = new StackPane();
 		
-		analyzeFile = new JButton("Analyze");
-		decryptFile = new JButton("Decrypt");
-		encryptFile = new JButton("Encrypt");
+		analyzeFile = new Button("Analyze");
+		decryptFile = new Button("Decrypt");
+		encryptFile = new Button("Encrypt");
 		
-		analyzeFile.addActionListener(new button_listners(this));
-		decryptFile.addActionListener(new button_listners(this));
-		encryptFile.addActionListener(new button_listners(this));
-		
-		buttonPanel.add(analyzeFile);
+		analyzeFile.setOnAction(Listners.getAnalyzeFileEventHandler());
+		decryptFile.setOnAction(Listners.getDecryptFileEventHandler());
+		encryptFile.setOnAction(Listners.getEncryptFileEventHandler());
+
+		buttonPanel.getChildren().add(analyzeFile);
 		
 		return buttonPanel;
 	}
-	*/
+
 	public void setFilename(File filepath) {
 		filename = filepath;
 	}
