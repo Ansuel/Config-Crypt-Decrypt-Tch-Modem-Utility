@@ -1,19 +1,37 @@
 package decrypt_config;
 
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 
-import javax.swing.JOptionPane;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.stage.FileChooser;
 
-public class button_listners implements ActionListener {
-
-		private gui_construct frame;
+public class button_listners {
+	
+	private gui_construct Scene;
+	private EventHandler<ActionEvent> inputFile;
+	
+	button_listners(gui_construct scene) {
+		this.Scene = scene;
+		this.inputFile = new EventHandler<ActionEvent>() {
+			@Override
+	    	public void handle(ActionEvent event) {
+	    		FileChooser File_Choser = new FileChooser();
+				File file = File_Choser.showOpenDialog(gui_inizializer.getStage());
+				if (file != null)
+					Scene.FileInputText.setText(file.toString());
+				Scene.setFilename(file);
+				event.consume();
+	    	}
+		};
+	}
+	
+	public EventHandler<ActionEvent> getInputFileEventHandler() {
+		return inputFile;
+	}
+		/*
 		
-		button_listners(gui_construct frame) {
-			this.frame = frame;
-		}
+		
 		
 		private void ResetButton(gui_construct frame) {
 			frame.buttonPanel.removeAll();
@@ -137,5 +155,5 @@ public class button_listners implements ActionListener {
 				InizializeInfoFile(file);
 			}
 
-		}
+		}*/
 }

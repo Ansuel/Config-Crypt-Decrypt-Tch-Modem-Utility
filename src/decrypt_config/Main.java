@@ -1,10 +1,12 @@
 package decrypt_config;
 
+import javafx.application.Application;
+
 public class Main {
 
 	public static void main(String[] args) throws Exception {
 		
-		new gui_construct();
+		Application.launch(gui_inizializer.class,args);
 		
 	}
 

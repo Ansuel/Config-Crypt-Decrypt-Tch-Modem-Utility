@@ -1,19 +1,34 @@
 package decrypt_config;
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.GridLayout;
 import java.io.File;
-import javax.swing.*;
-import javax.swing.border.TitledBorder;
 
-public class gui_construct extends JFrame {
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
-	private static final long serialVersionUID = 1L;
-	private static final String titolo = "Technicolor modem Crypt / Decrypt config utiliy";
+public class gui_construct {
+
+	private Scene scene;
+	
 	private static final Exception Exception = null;
+	
 	private File filename;
 	private key_pair key;
 	
+	TextField FileInputText;
+	/*
 	JPanel buttonPanel;
 	JButton decryptFile;
 	JButton encryptFile;
@@ -34,33 +49,57 @@ public class gui_construct extends JFrame {
 	JLabel Crypted;
 	JLabel IV;
 
-    JFileChooser file_choser = new JFileChooser();
-	
-	public gui_construct() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
-		super(titolo);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		Container frmContentPane = getContentPane();
-		frmContentPane.add(Header(), BorderLayout.NORTH);
-		frmContentPane.add(ContentPanel(), BorderLayout.CENTER);
-		frmContentPane.add(ButtonPanel(), BorderLayout.SOUTH);
+    JFileChooser file_choser = new JFileChooser();*/
+	 
+	public gui_construct() {
+		VBox root = new VBox();
+		root.setPadding(new Insets(20, 10, 10, 10));
 		
-		pack();
-		setLocationRelativeTo(null);
-		
-		setVisible(true);
+        this.scene = new Scene(root);
+        
+        root.getChildren().add(Header());
+        root.getChildren().add(InputFilePanel());
 	}
-	
-	private JPanel Header() {
+    
+	button_listners Listners = new button_listners(this);
+    
+    private Node Header() {
 		
-		final JPanel headPanel = new JPanel();
+		final StackPane headPanel = new StackPane();
+		headPanel.setPadding(new Insets(0 , 0 , 20 , 0 ));
 		
-		final JLabel head = new JLabel("Utility to decrypt and encrypt config file from modem");
-		headPanel.add(head);
+		final Label head = new Label("Utility to decrypt and encrypt config file from modem");
+		head.setFont(Font.font("Arial", FontWeight.NORMAL, 20));
+		headPanel.getChildren().add(head);
 		
 		return headPanel;
 	}
-	
+    
+    private Node InputFilePanel() {
+		
+		final HBox filePanel = new HBox();
+		
+		FileInputText = new TextField();
+		FileInputText.setEditable(false);
+		Button input = new Button("Select File");
+		input.setOnAction(Listners.getInputFileEventHandler());
+
+		filePanel.getChildren().add(FileInputText);
+		filePanel.getChildren().add(input);
+		
+		HBox.setHgrow(FileInputText, Priority.ALWAYS);
+		
+		TitledPane fileSubPanel = new TitledPane("Config File", filePanel); 
+		fileSubPanel.setCollapsible(false);
+		
+		return fileSubPanel;
+	}
+    
+    /*
+	Container frmContentPane = getContentPane();
+		frmContentPane.add(Header(), BorderLayout.NORTH);
+		frmContentPane.add(ContentPanel(), BorderLayout.CENTER);
+		frmContentPane.add(ButtonPanel(), BorderLayout.SOUTH);
 	private JPanel ContentPanel() {
 		JPanel contentPanel = new JPanel(new BorderLayout());
 		
@@ -70,22 +109,6 @@ public class gui_construct extends JFrame {
 		contentPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		
 		return contentPanel;
-	}
-	
-	private JPanel InputFilePanel() {
-		
-		JPanel fileSubPanel = new JPanel(); 
-		fileSubPanel.setBorder(new TitledBorder("Config File"));
-		inputtextField = new JTextField(50);
-		inputtextField.setEditable(false);
-		input = new JButton("Select File");
-		
-		fileSubPanel.add(inputtextField);
-		fileSubPanel.add(input);
-		
-		input.addActionListener(new button_listners(this));
-		
-		return fileSubPanel;
 	}
 	
 	private JPanel InputKeyPairPanel() {
@@ -185,9 +208,9 @@ public class gui_construct extends JFrame {
 		
 		return buttonPanel;
 	}
-	
-	public void setFilename(File filename) {
-		this.filename = filename;
+	*/
+	public void setFilename(File filepath) {
+		filename = filepath;
 	}
 	
 	public void setKeyPair(String key) throws Exception {
@@ -205,4 +228,9 @@ public class gui_construct extends JFrame {
 	public key_pair getKeyPair() {
 		return key;
 	}
+	
+	public Scene getScene() {
+		return scene;
+	}
+
 }
