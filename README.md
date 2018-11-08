@@ -7,3 +7,5 @@ The key must be 128 char and every config file is encrypted with the modem uniqu
 
 To decrypt the encrypted config file, just select the file, insert the key and click Analyze and Decrypt. 
 When all the need changes has been done, just select the decrypted file and click Analayze and Encrypt using the same key
+
+The new file can now be loaded to the locked gui.
