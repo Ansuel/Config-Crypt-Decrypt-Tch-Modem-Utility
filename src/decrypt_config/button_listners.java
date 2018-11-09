@@ -160,7 +160,7 @@ public class button_listners {
 				Scene.IV.setTextFill(Color.GRAY);
 			}
 			
-			Scene.log.appendText("Deected a valid config file.\n");
+			Scene.log.appendText("Detected a valid config file.\n");
 			Scene.log.appendText("The file scanned is "+file_type+".\n");
 
 			//Scene.log.setCaretPosition(Scene.log.getDocument().getLength());
